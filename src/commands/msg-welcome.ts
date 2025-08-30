@@ -19,7 +19,7 @@ import { errorMessage } from "../utils/errorMessage";
 import { hasStaffRole } from "../utils/roleChecker";
 
 const msgWelcomeCommand: Command = {
-    name: "msg-tickets",
+    name: "msg-welcome",
     description: "-",
     dm: false,
 
@@ -39,7 +39,7 @@ const msgWelcomeCommand: Command = {
         }
 
         const title = new TextDisplayBuilder().setContent(`# Hello ! Je suis Erya, ton nouvel assistant sur le Discord de Papillon ${process.env.GREEN_PAPILLON}`);
-        const desc = new TextDisplayBuilder().setContent(`**Et bonne nouvelle, je suis open-source, tu peux donc contribuer à mon évolution depuis le répository GitHub disponible en cliquant sur le bouton ci-dessous !** ✨`)
+        const desc = new TextDisplayBuilder().setContent(`Et bonne nouvelle, je suis open-source, tu peux donc contribuer à mon évolution depuis le répository GitHub disponible en cliquant sur le bouton ci-dessous ! 🎊`)
         const separator = new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Large);
         const description = new TextDisplayBuilder().setContent("**Tu peux faire la commande ``/aide`` pour voir mes fonctionnalitées à tout moment 🦋 !**");
         const thumbnail = new ThumbnailBuilder({
@@ -58,12 +58,13 @@ const msgWelcomeCommand: Command = {
             .addComponents(button);
 
         const section = new SectionBuilder()
-            .addTextDisplayComponents(title, description)
+            .addTextDisplayComponents(title, desc)
             .setThumbnailAccessory(thumbnail);
 
         const container = new ContainerBuilder()
             .addSectionComponents(section)
             .addSeparatorComponents(separator)
+            .addTextDisplayComponents(description)
             .addActionRowComponents(actionrow);
 
         await interaction.reply({
