@@ -10,9 +10,12 @@ import {
     ButtonBuilder,
     ButtonStyle,
     GuildTextBasedChannel,
+    GuildMember,
 } from "discord.js";
 import { Command } from "../types/Command";
 import type { ExtendedClient } from "../types/ExtendedClient";
+import { hasStaffRole } from "../utils/roleChecker";
+import { errorMessage } from "../utils/errorMessage";
 
 const msgRulesCommand: Command = {
     name: "msg-rules",
@@ -20,6 +23,19 @@ const msgRulesCommand: Command = {
     dm: false,
 
     async run(bot: ExtendedClient, interaction: ChatInputCommandInteraction) {
+
+        if (!hasStaffRole(interaction.member as GuildMember)) {
+            await interaction.reply(
+                errorMessage(
+                    bot,
+                    "Désolé, tu n’as pas la permission d’utiliser cette commande.",
+                    "Permission refusée",
+                    "0x203",
+                    false
+                )
+            );
+            return;
+        }
 
         const title = new TextDisplayBuilder().setContent(`## Bienvenue sur le Discord officiel de Papillon ${process.env.GREEN_PAPILLON}`);
         const description = new TextDisplayBuilder().setContent("Papillon est un client libre, open-source et développé par une communauté d’élèves pour l’ensemble de vos services de vie scolaire ! 😎")

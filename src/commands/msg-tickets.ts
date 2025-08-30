@@ -10,9 +10,12 @@ import {
     ActionRowBuilder,
     GuildTextBasedChannel,
     StringSelectMenuBuilder,
+    GuildMember,
 } from "discord.js";
 import { Command } from "../types/Command";
 import type { ExtendedClient } from "../types/ExtendedClient";
+import { errorMessage } from "../utils/errorMessage";
+import { hasStaffRole } from "../utils/roleChecker";
 
 const msgTicketsCommand: Command = {
     name: "msg-tickets",
@@ -20,6 +23,19 @@ const msgTicketsCommand: Command = {
     dm: false,
 
     async run(bot: ExtendedClient, interaction: ChatInputCommandInteraction) {
+
+        if (!hasStaffRole(interaction.member as GuildMember)) {
+            await interaction.reply(
+                errorMessage(
+                    bot,
+                    "Désolé, tu n’as pas la permission d’utiliser cette commande.",
+                    "Permission refusée",
+                    "0x203",
+                    false
+                )
+            );
+            return;
+        }
 
         const title = new TextDisplayBuilder().setContent(`# Bienvenue sur le support Papillon ${process.env.GREEN_PAPILLON}`);
         const separator = new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Large);
