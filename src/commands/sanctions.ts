@@ -181,6 +181,10 @@ const sanctionsCommand: Command = {
             const response = await interaction.reply({
                 flags: [MessageFlags.IsComponentsV2],
                 components: [createContainer(currentPage), ...createButtons(currentPage)],
+                allowedMentions: {
+                    parse: [],
+                    roles: [],
+                },
             });
 
             // Collecteur pour gérer les boutons
@@ -223,6 +227,10 @@ const sanctionsCommand: Command = {
 
                     await buttonInteraction.update({
                         components: [createContainer(currentPage), ...createButtons(currentPage)],
+                        allowedMentions: {
+                            parse: [],
+                            roles: [],
+                        },
                     });
                 });
 
@@ -230,6 +238,10 @@ const sanctionsCommand: Command = {
                     try {
                         await response.edit({
                             components: [createContainer(currentPage)],
+                            allowedMentions: {
+                                parse: [],
+                                roles: [],
+                            },
                         });
                     } catch {
                         return;
