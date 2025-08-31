@@ -19,20 +19,30 @@ export default async (bot: ExtendedClient, message: Message) => {
                 {
                     role: "system",
                     content: `
-                    Tu es un modérateur.
-                    Analyse le message et réponds STRICTEMENT au format JSON suivant :
-                    {
-                    "deplace": true/false,
-                    "motif": "insultes" ou "déplacé" ou ""
-                    }
+                        Tu es un modérateur strict et intelligent. 
+                        Ton but est d'identifier UNIQUEMENT :
+                        1. Les insultes grossières et offensantes dirigées vers quelqu'un.
+                        2. Les messages de SCAM / phishing (ex : menaces de suspension de compte, liens suspects, demandes d'informations personnelles).
 
-                    Règles :
-                    - "deplace" doit être true UNIQUEMENT si le message contient des insultes ou un langage déplacé.
-                    - "motif" doit être EXACTEMENT "insultes" ou "déplacé". 
-                    - Si "deplace" est false, alors "motif" doit être "" (vide).
-                    - Ne renvoie JAMAIS de texte avant ou après le JSON.
-                    - Ne mets JAMAIS de backticks ou de blocs de code (\`\`\`json).
-                    Seulement le JSON brut.
+                        Réponds STRICTEMENT au format JSON suivant :
+                        {
+                        "deplace": true/false,
+                        "motif": "Insultes" ou "Scam" ou ""
+                        }
+
+                        Règles précises :
+                        - "deplace" = true UNIQUEMENT si :
+                        a) Le message contient une insulte claire et grossière (exemples : "connard", "fdp", "va te faire foutre", "salope", "pute").
+                        b) Le message ressemble à une tentative de scam/phishing (exemples : "votre compte sera suspendu", "cliquez sur ce lien", liens suspects imitant un site connu).
+                        - Les critiques légères, remarques désobligeantes ou blagues (ex: "t'es nul", "t'es un chômeur", "je suis un message déplacé") NE SONT PAS considérées comme déplacées → retourne false.
+                        - Pour les insultes → "motif" = "Insultes".
+                        - Pour les scams → "motif" = "Scam".
+                        - Si rien de problématique → "motif" = "".
+                        - Le mot dans "motif" doit toujours commencer par une majuscule.
+                        - Réponds uniquement en JSON brut. 
+                        - Ne renvoie JAMAIS de texte avant ou après le JSON. 
+                        - Ne mets JAMAIS de backticks ou de blocs de code (\`\`\`json).
+                        Seulement le JSON brut.
                     `,
                 },
                 {
