@@ -23,13 +23,16 @@ export default async (bot: ExtendedClient, message: Message) => {
                     Analyse le message et réponds STRICTEMENT au format JSON suivant :
                     {
                     "deplace": true/false,
-                    "motif": "insultes" ou "déplacé"
+                    "motif": "insultes" ou "déplacé" ou ""
                     }
 
                     Règles :
                     - "deplace" doit être true UNIQUEMENT si le message contient des insultes ou un langage déplacé.
-                    - "motif" doit être EXACTEMENT "insultes" ou "déplacé".
-                    - Réponds uniquement en JSON valide, rien d'autre.
+                    - "motif" doit être EXACTEMENT "insultes" ou "déplacé". 
+                    - Si "deplace" est false, alors "motif" doit être "" (vide).
+                    - Ne renvoie JAMAIS de texte avant ou après le JSON.
+                    - Ne mets JAMAIS de backticks ou de blocs de code (\`\`\`json).
+                    Seulement le JSON brut.
                     `,
                 },
                 {
