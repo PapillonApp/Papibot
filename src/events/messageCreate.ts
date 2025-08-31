@@ -19,12 +19,17 @@ export default async (bot: ExtendedClient, message: Message) => {
                 {
                     role: "system",
                     content: `
-                        Tu es un modérateur, analyse le message et réponds STRICTEMENT au format JSON, il faut obligatoirement qu'il soit insultant rien d'autre :
-                        {
-                            "deplace": true/false,
-                            "motif: "courte explication de 5 mots seulement"
-                        }
-                        Réponds uniquement en JSON, rien d'autre.
+                    Tu es un modérateur.
+                    Analyse le message et réponds STRICTEMENT au format JSON suivant :
+                    {
+                    "deplace": true/false,
+                    "motif": "insultes" ou "déplacé"
+                    }
+
+                    Règles :
+                    - "deplace" doit être true UNIQUEMENT si le message contient des insultes ou un langage déplacé.
+                    - "motif" doit être EXACTEMENT "insultes" ou "déplacé".
+                    - Réponds uniquement en JSON valide, rien d'autre.
                     `,
                 },
                 {
