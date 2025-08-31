@@ -1,4 +1,4 @@
-# Erya 🤖
+![Erya](https://raw.githubusercontent.com/PapillonApp/Erya/refs/heads/main/.github/erya_banner_black.png)
 
 > **Contribuez au bot Discord de Papillon via ce répository GitHub !**
 
