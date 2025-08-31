@@ -64,7 +64,7 @@ export default async (bot: ExtendedClient, message: Message) => {
             const separator = new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Large);
 
             const description = new TextDisplayBuilder()
-                .setContent(`${process.env.BLUE_DISCORD} **Utilisateur :** <@${message.author.id}>\n${process.env.RED_STAR} **Motif :** ${parsed.motif || "Non spécifiié"}\n\n${process.env.RED_FLAG} **Message :** ${message.content}`);
+                .setContent(`${process.env.BLUE_DISCORD} **Utilisateur :** <@${message.author.id}>\n${process.env.GREEN_PAPILLON} **Salon :** <#${message.channel.id}> - ${message.url}\n${process.env.RED_STAR} **Motif :** ${parsed.motif || "Non spécifiié"}\n\n${process.env.RED_FLAG} **Message :** ${message.content}`);
 
             const container = new ContainerBuilder()
                 .addTextDisplayComponents(title)
