@@ -39,7 +39,7 @@ const warnCommand: Command = {
         let db = bot.db;
         let userTargeted = interaction.options.getUser("utilisateur"); if (!userTargeted) { return; }
         let reason = interaction.options.getString("raison") || "Aucune raison n’a été précisée.";
-        const logsChannelId = process.env.CHANNEL_SANCTIONS_LOGS as string;
+        const logsChannelId = process.env.CHANNEL_LOGS as string;
         const logsChannel = interaction.guild?.channels.cache.get(logsChannelId);
 
         // Vérification des permissions

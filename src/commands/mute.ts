@@ -46,7 +46,7 @@ const muteCommand: Command = {
         let userTargeted = interaction.options.getUser("utilisateur"); if (!userTargeted) { return; }
         let duration = interaction.options.getString("duree"); if (!duration) { return; }
         let reason = interaction.options.getString("raison") || "Aucune raison n’a été précisée.";
-        const logsChannelId = process.env.CHANNEL_SANCTIONS_LOGS as string;
+        const logsChannelId = process.env.CHANNEL_LOGS as string;
         const logsChannel = interaction.guild?.channels.cache.get(logsChannelId);
 
         // Vérification des permissions
