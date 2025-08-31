@@ -19,7 +19,7 @@ export default async (bot: ExtendedClient, message: Message) => {
                 {
                     role: "system",
                     content: `
-                        Tu es un modérateur, analyse le message et réponds STRICTEMENT au format JSON :
+                        Tu es un modérateur, analyse le message et réponds STRICTEMENT au format JSON, il faut obligatoirement qu'il soit insultant rien d'autre :
                         {
                             "deplace": true/false,
                             "motif: "courte explication de 5 mots seulement"
