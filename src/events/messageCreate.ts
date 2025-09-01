@@ -22,10 +22,10 @@ export default async (bot: ExtendedClient, message: Message) => {
                 TOXICITY: {},
                 INSULT: {},
                 THREAT: {},
-                SEXUALLY_EXPLICIT: {},
                 IDENTITY_ATTACK: {}
             },
-            doNotStore: true
+            doNotStore: true,
+            languages: ["fr"]
         });
 
         const scores = result.attributeScores;
@@ -33,7 +33,6 @@ export default async (bot: ExtendedClient, message: Message) => {
         const toxicity = scores?.TOXICITY?.summaryScore?.value ?? 0;
         const insult = scores?.INSULT?.summaryScore?.value ?? 0;
         const threat = scores?.THREAT?.summaryScore?.value ?? 0;
-        const sexual = scores?.SEXUALLY_EXPLICIT?.summaryScore?.value ?? 0;
         const identity = scores?.IDENTITY_ATTACK?.summaryScore?.value ?? 0;
 
         let deplace = false;
@@ -45,9 +44,6 @@ export default async (bot: ExtendedClient, message: Message) => {
         } else if (threat >= 0.7) {
             deplace = true;
             motif = "Menaces";
-        } else if (sexual >= 0.7) {
-            deplace = true;
-            motif = "Contenu sexuel";
         } else if (identity >= 0.7) {
             deplace = true;
             motif = "Attaque identité";
