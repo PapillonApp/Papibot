@@ -157,7 +157,11 @@ const banCommand: Command = {
         // Envoyer dans le salon dans laquelle la commande a été faîte
         interaction.reply({
             flags: [MessageFlags.IsComponentsV2],
-            components: [container]
+            components: [container],
+            allowedMentions: {
+                parse: [],
+                roles: [],
+            },
         });
 
         // Envoyer dans le salon des logs du serveur
