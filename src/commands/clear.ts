@@ -28,7 +28,7 @@ const clearCommand: Command = {
     async run(bot: ExtendedClient, interaction: ChatInputCommandInteraction) {
 
         // Récupération des variables
-        let numberOfMessages = interaction.options.getInteger("nombre");
+        const numberOfMessages = interaction.options.getInteger("nombre");
         const logsChannelId = process.env.CHANNEL_LOGS as string;
         const logsChannel = interaction.guild?.channels.cache.get(logsChannelId);
 
