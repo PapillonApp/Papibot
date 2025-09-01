@@ -47,7 +47,7 @@ const clearCommand: Command = {
         }
 
         // Vérification du nombre saisi
-        if (numberOfMessages || 0 < 1 || numberOfMessages || 0 > 100) {
+        if (numberOfMessages! < 1 || numberOfMessages! > 100) {
             await interaction.reply(
                 errorMessage(
                     bot,
@@ -60,7 +60,7 @@ const clearCommand: Command = {
             return;
         }
 
-        const deletedMessages = await (interaction.channel as GuildTextBasedChannel).bulkDelete(numberOfMessages || 0, true);
+        const deletedMessages = await (interaction.channel as GuildTextBasedChannel).bulkDelete(numberOfMessages!, true);
 
         // Envoyer un message de confirmation
         const text = new TextDisplayBuilder().setContent(`${process.env.GREEN_PAPILLON} **Tu viens de supprimer ${deletedMessages.size} messages de ce salon !**`);
