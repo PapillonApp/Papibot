@@ -8,7 +8,6 @@ import {
     TextDisplayBuilder 
 } from "discord.js";
 import { ExtendedClient } from "../types/ExtendedClient";
-import fetch from "node-fetch";
 
 const PERSPECTIVE_API_KEY = process.env.PERSPECTIVE_API_KEY as string;
 
@@ -62,7 +61,6 @@ export default async (bot: ExtendedClient, message: Message) => {
         let deplace = false;
         let motif = "";
 
-        // Seuils souples pour flag les messages
         if (insult >= 0.75 || toxicity >= 0.85) {
             deplace = true;
             motif = "Insultes / Toxicité";
