@@ -168,7 +168,11 @@ const banCommand: Command = {
         if (logsChannel && logsChannel.isTextBased()) {
             logsChannel.send({
                 flags: [MessageFlags.IsComponentsV2],
-                components: [container]
+                components: [container],
+                allowedMentions: {
+                    parse: [],
+                    roles: [],
+                },
             });
         } else {
             return;
