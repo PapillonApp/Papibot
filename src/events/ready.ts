@@ -82,8 +82,8 @@ export default async (bot: ExtendedClient) => {
     status: "online",
     activities: [
       {
-        name: "le PapiEvent 2025",
-        type: ActivityType.Watching,
+        name: "💜 Bonne rentrée à tous et à toutes",
+        type: ActivityType.Custom,
       },
     ],
   });
