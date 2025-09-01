@@ -8,66 +8,47 @@ import {
     TextDisplayBuilder 
 } from "discord.js";
 import { ExtendedClient } from "../types/ExtendedClient";
+// @ts-ignore
+import { PerspectiveClient } from 'perspective-api-client';
 
 const PERSPECTIVE_API_KEY = process.env.PERSPECTIVE_API_KEY as string;
-
-interface PerspectiveResponse {
-    attributeScores: {
-        TOXICITY?: { summaryScore: { value: number } };
-        INSULT?: { summaryScore: { value: number } };
-        THREAT?: { summaryScore: { value: number } };
-        SEXUALLY_EXPLICIT?: { summaryScore: { value: number } };
-        IDENTITY_ATTACK?: { summaryScore: { value: number } };
-    };
-}
-
-async function analyzeMessageWithPerspective(text: string) {
-    const url = `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${PERSPECTIVE_API_KEY}`;
-
-    const body = {
-        comment: { text },
-        languages: ["fr", "en"], 
-        requestedAttributes: {
-            TOXICITY: {},
-            INSULT: {},
-            THREAT: {},
-            SEXUALLY_EXPLICIT: {},
-            IDENTITY_ATTACK: {}
-        }
-    };
-
-    const response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" },
-    });
-
-    const result = (await response.json()) as PerspectiveResponse;
-    return result.attributeScores;
-}
+const perspective = new PerspectiveClient({ apiKey: PERSPECTIVE_API_KEY });
 
 export default async (bot: ExtendedClient, message: Message) => {
     if (message.author.bot) return;
 
     try {
-        const scores = await analyzeMessageWithPerspective(message.content);
+        const result = await perspective.analyze({
+            comment: { text: message.content },
+            languages: ["fr"],
+            requestedAttributes: {
+                TOXICITY: {},
+                INSULT: {},
+                THREAT: {},
+                SEXUALLY_EXPLICIT: {},
+                IDENTITY_ATTACK: {}
+            },
+            doNotStore: true
+        });
 
-        const toxicity = scores?.TOXICITY?.summaryScore?.value || 0;
-        const insult = scores?.INSULT?.summaryScore?.value || 0;
-        const threat = scores?.THREAT?.summaryScore?.value || 0;
-        const sexual = scores?.SEXUALLY_EXPLICIT?.summaryScore?.value || 0;
-        const identity = scores?.IDENTITY_ATTACK?.summaryScore?.value || 0;
+        const scores = result.attributeScores;
+
+        const toxicity = scores?.TOXICITY?.summaryScore?.value ?? 0;
+        const insult = scores?.INSULT?.summaryScore?.value ?? 0;
+        const threat = scores?.THREAT?.summaryScore?.value ?? 0;
+        const sexual = scores?.SEXUALLY_EXPLICIT?.summaryScore?.value ?? 0;
+        const identity = scores?.IDENTITY_ATTACK?.summaryScore?.value ?? 0;
 
         let deplace = false;
         let motif = "";
 
-        if (insult >= 0.75 || toxicity >= 0.85) {
+        if (insult >= 0.7 || toxicity >= 0.75) {
             deplace = true;
             motif = "Insultes / Toxicité";
         } else if (threat >= 0.7) {
             deplace = true;
             motif = "Menaces";
-        } else if (sexual >= 0.75) {
+        } else if (sexual >= 0.7) {
             deplace = true;
             motif = "Contenu sexuel";
         } else if (identity >= 0.7) {
@@ -98,6 +79,6 @@ export default async (bot: ExtendedClient, message: Message) => {
         }
 
     } catch (err) {
-        console.error("Erreur lors de la modération d'un message avec Perspective :", err);
+        console.error("Erreur lors de la modération avec Perspective API :", err);
     }
 };
