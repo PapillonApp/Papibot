@@ -72,6 +72,6 @@ export default async (bot: ExtendedClient, message: Message) => {
         }
 
     } catch (err) {
-        console.error("Erreur lors de la modération avec Perspective API :", err);
+        console.error(`❌ Impossible de vérifier avec Perspective API ce message: ${message.content}`);
     }
 };
