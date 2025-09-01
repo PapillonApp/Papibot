@@ -63,14 +63,14 @@ const clearCommand: Command = {
         const deletedMessages = await (interaction.channel as GuildTextBasedChannel).bulkDelete(numberOfMessages!, true);
 
         // Envoyer un message de confirmation
-        const text = new TextDisplayBuilder().setContent(`${process.env.GREEN_PAPILLON} **Tu viens de supprimer ${deletedMessages.size} messages de ce salon !**`);
+        const text = new TextDisplayBuilder().setContent(`${process.env.GREEN_PAPILLON} **Tu viens de supprimer ${deletedMessages.size} message(s) de ce salon !**`);
 
         const container = new ContainerBuilder()
             .addTextDisplayComponents(text);
 
         // Envoyer dans le salon dans laquelle la commande a été faîte
         interaction.reply({
-            flags: [MessageFlags.IsComponentsV2],
+            flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
             components: [container],
             allowedMentions: {
                 parse: [],
