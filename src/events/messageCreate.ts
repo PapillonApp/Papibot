@@ -1,61 +1,83 @@
-import { ContainerBuilder, GuildChannel, GuildMember, GuildTextBasedChannel, Message, MessageFlags, SectionBuilder, SeparatorBuilder, SeparatorSpacingSize, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
+import { 
+    ContainerBuilder, 
+    GuildTextBasedChannel, 
+    Message, 
+    MessageFlags, 
+    SeparatorBuilder, 
+    SeparatorSpacingSize, 
+    TextDisplayBuilder 
+} from "discord.js";
 import { ExtendedClient } from "../types/ExtendedClient";
-import OpenAI from "openai";
+import fetch from "node-fetch";
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENROUTER_API_KEY,
-    baseURL: "https://openrouter.ai/api/v1"
-});
+const PERSPECTIVE_API_KEY = process.env.PERSPECTIVE_API_KEY as string;
+
+interface PerspectiveResponse {
+    attributeScores: {
+        TOXICITY?: { summaryScore: { value: number } };
+        INSULT?: { summaryScore: { value: number } };
+        THREAT?: { summaryScore: { value: number } };
+        SEXUALLY_EXPLICIT?: { summaryScore: { value: number } };
+        IDENTITY_ATTACK?: { summaryScore: { value: number } };
+    };
+}
+
+async function analyzeMessageWithPerspective(text: string) {
+    const url = `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${PERSPECTIVE_API_KEY}`;
+
+    const body = {
+        comment: { text },
+        languages: ["fr", "en"], 
+        requestedAttributes: {
+            TOXICITY: {},
+            INSULT: {},
+            THREAT: {},
+            SEXUALLY_EXPLICIT: {},
+            IDENTITY_ATTACK: {}
+        }
+    };
+
+    const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+    });
+
+    const result = (await response.json()) as PerspectiveResponse;
+    return result.attributeScores;
+}
 
 export default async (bot: ExtendedClient, message: Message) => {
-
     if (message.author.bot) return;
 
     try {
+        const scores = await analyzeMessageWithPerspective(message.content);
 
-        const completion = await openai.chat.completions.create({
-            model: "openai/gpt-4o",
-            messages: [
-                {
-                    role: "system",
-                    content: `
-                        Tu es un modérateur strict et intelligent. 
-                        Ton but est d'identifier UNIQUEMENT :
-                        1. Les insultes grossières et offensantes dirigées vers quelqu'un.
-                        2. Les messages de SCAM / phishing (ex : menaces de suspension de compte, liens suspects, demandes d'informations personnelles).
+        const toxicity = scores?.TOXICITY?.summaryScore?.value || 0;
+        const insult = scores?.INSULT?.summaryScore?.value || 0;
+        const threat = scores?.THREAT?.summaryScore?.value || 0;
+        const sexual = scores?.SEXUALLY_EXPLICIT?.summaryScore?.value || 0;
+        const identity = scores?.IDENTITY_ATTACK?.summaryScore?.value || 0;
 
-                        Réponds STRICTEMENT au format JSON suivant :
-                        {
-                        "deplace": true/false,
-                        "motif": "Insultes" ou "Scam" ou ""
-                        }
+        let deplace = false;
+        let motif = "";
 
-                        Règles précises :
-                        - "deplace" = true UNIQUEMENT si :
-                        a) Le message contient une insulte claire et grossière (exemples : "connard", "fdp", "va te faire foutre", "salope", "pute").
-                        b) Le message ressemble à une tentative de scam/phishing (exemples : "votre compte sera suspendu", "cliquez sur ce lien", liens suspects imitant un site connu).
-                        - Les critiques légères, remarques désobligeantes ou blagues (ex: "t'es nul", "t'es un chômeur", "je suis un message déplacé") NE SONT PAS considérées comme déplacées → retourne false.
-                        - Pour les insultes → "motif" = "Insultes".
-                        - Pour les scams → "motif" = "Scam".
-                        - Si rien de problématique → "motif" = "".
-                        - Le mot dans "motif" doit toujours commencer par une majuscule.
-                        - Réponds uniquement en JSON brut. 
-                        - Ne renvoie JAMAIS de texte avant ou après le JSON. 
-                        - Ne mets JAMAIS de backticks ou de blocs de code (\`\`\`json).
-                        Seulement le JSON brut.
-                    `,
-                },
-                {
-                    role: "user",
-                    content: `${message.content}`,
-                },
-            ],
-        });
+        // Seuils souples pour flag les messages
+        if (insult >= 0.75 || toxicity >= 0.85) {
+            deplace = true;
+            motif = "Insultes / Toxicité";
+        } else if (threat >= 0.7) {
+            deplace = true;
+            motif = "Menaces";
+        } else if (sexual >= 0.75) {
+            deplace = true;
+            motif = "Contenu sexuel";
+        } else if (identity >= 0.7) {
+            deplace = true;
+            motif = "Attaque identité";
+        }
 
-        const output = completion.choices[0]?.message?.content ?? "{}";
-        const parsed = JSON.parse(output);
-
-        if (parsed.deplace) {
+        if (deplace) {
             const moderationChannel = bot.channels.cache.get(`${process.env.CHANNEL_AI_MODERATION}`) as GuildTextBasedChannel;
 
             const title = new TextDisplayBuilder()
@@ -64,7 +86,7 @@ export default async (bot: ExtendedClient, message: Message) => {
             const separator = new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Large);
 
             const description = new TextDisplayBuilder()
-                .setContent(`${process.env.BLUE_DISCORD} **Utilisateur :** <@${message.author.id}>\n${process.env.GREEN_PAPILLON} **Salon :** <#${message.channel.id}> - ${message.url}\n${process.env.RED_STAR} **Motif :** ${parsed.motif || "Non spécifiié"}\n\n${process.env.RED_FLAG} **Message :** ${message.content}`);
+                .setContent(`${process.env.BLUE_DISCORD} **Utilisateur :** <@${message.author.id}>\n${process.env.GREEN_PAPILLON} **Salon :** <#${message.channel.id}> - ${message.url}\n${process.env.RED_STAR} **Motif :** ${motif || "Non spécifié"}\n\n${process.env.RED_FLAG} **Message :** ${message.content}`);
 
             const container = new ContainerBuilder()
                 .addTextDisplayComponents(title)
@@ -78,7 +100,6 @@ export default async (bot: ExtendedClient, message: Message) => {
         }
 
     } catch (err) {
-        console.log("Erreur lors de la modération d'un message :", err);
+        console.error("Erreur lors de la modération d'un message avec Perspective :", err);
     }
-    
 };
