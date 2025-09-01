@@ -8,11 +8,9 @@ import {
     TextDisplayBuilder 
 } from "discord.js";
 import { ExtendedClient } from "../types/ExtendedClient";
-// @ts-ignore
-import { PerspectiveClient } from 'perspective-api-client';
 
-const PERSPECTIVE_API_KEY = process.env.PERSPECTIVE_API_KEY as string;
-const perspective = new PerspectiveClient({ apiKey: PERSPECTIVE_API_KEY });
+const Perspective = require('perspective-api-client');
+const perspective = new Perspective({ apiKey: process.env.PERSPECTIVE_API_KEY });
 
 export default async (bot: ExtendedClient, message: Message) => {
     if (message.author.bot) return;
@@ -20,7 +18,6 @@ export default async (bot: ExtendedClient, message: Message) => {
     try {
         const result = await perspective.analyze({
             comment: { text: message.content },
-            languages: ["fr"],
             requestedAttributes: {
                 TOXICITY: {},
                 INSULT: {},
