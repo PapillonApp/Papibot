@@ -79,7 +79,7 @@ const clearCommand: Command = {
         });
 
         // Envoyer dans le salon des logs du serveur
-        const text2 = new TextDisplayBuilder().setContent(`${process.env.GREEN_PAPILLON} **<@${interaction.member?.user.id}> a supprimer ${deletedMessages.size} messages du salon <#${interaction.channel?.id}>**`);
+        const text2 = new TextDisplayBuilder().setContent(`${process.env.GREEN_PAPILLON} **<@${interaction.member?.user.id}> a supprimer ${deletedMessages.size} messages dans le salon <#${interaction.channel?.id}>**`);
 
         const container2 = new ContainerBuilder()
             .addTextDisplayComponents(text2);
