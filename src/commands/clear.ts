@@ -13,7 +13,7 @@ import { errorMessage } from "../utils/errorMessage";
 import "dotenv/config";
 
 const clearCommand: Command = {
-    name: "effacer-messages",
+    name: "clear",
     description: "Effacer d'un seul coup un nombre précis de message dans un salon",
     dm: false,
     options: [
