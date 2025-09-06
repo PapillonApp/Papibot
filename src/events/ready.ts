@@ -1,6 +1,7 @@
 import { ActivityType, Client } from "discord.js";
 import loadSlashCommands from "../loaders/loadSlashCommands";
 import loadDatabase from "../loaders/loadDatabase";
+import express from "express";
 import type { ExtendedClient } from "../types/ExtendedClient";
 import type { Connection } from "mysql2";
 
@@ -92,4 +93,18 @@ export default async (bot: ExtendedClient) => {
 
   // Lancer le serveur web
   //initWebServer(bot);
+
+
+  
+  // HEALTH SERVER FOR COOLIFY
+  const app = express();
+  const PORT = 8080;
+  
+  app.get("/health", (_req, res) => {
+    res.status(200).send("OK");
+  });
+
+  app.listen(PORT, () => {
+    console.log(`Health check server for Coolify listening on port ${PORT}`);
+  });
 };
