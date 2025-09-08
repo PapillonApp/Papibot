@@ -83,7 +83,7 @@ export default async (bot: ExtendedClient) => {
     status: "online",
     activities: [
       {
-        name: "💜 Bonne rentrée à tous et à toutes",
+        name: "💜 Téléchargez Papillon V8 dès maintenant !",
         type: ActivityType.Custom,
       },
     ],
