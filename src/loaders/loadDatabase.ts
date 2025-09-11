@@ -3,7 +3,7 @@ import "dotenv/config";
 
 let pool: Pool;
 
-export default function loadDatabase(): Pool {
+export default function ensureDatabase(): Pool {
   if (!pool) {
     pool = mysql.createPool({
       host: process.env.DB_HOST!,
@@ -21,6 +21,14 @@ export default function loadDatabase(): Pool {
 
     pool.on("error", (err) => {
       console.error("Erreur pool MySQL:", err);
+    });
+    
+    pool.query("SELECT 1", (err: mysql.QueryError | null) => {
+      if (err) {
+        console.error("Erreur de connexion à la BDD:", err);
+      } else {
+        console.log("Connexion BDD OK !");
+      }
     });
   }
   return pool;
