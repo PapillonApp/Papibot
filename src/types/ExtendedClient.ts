@@ -1,10 +1,10 @@
 import { Client, Collection, ClientOptions } from "discord.js";
 import type { Command } from "./Command";
-import type { Connection } from "mysql2";
+import type { Pool } from "mysql2";
 
 export class ExtendedClient extends Client {
   public commands: Collection<string, Command>;
-  public db?: Connection;
+  public db?: Pool;
 
   public errors: Map<
     string,
