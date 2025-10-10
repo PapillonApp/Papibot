@@ -14,6 +14,7 @@ export default async (bot: ExtendedClient, message: Message) => {
     if (!message.reference) return;
     const repliedMessage = await message.fetchReference().catch(() => null);
     if (!repliedMessage) return;
+    if (repliedMessage.author.bot) return;
     const member = message.member;
     if (!member) return;
     if (!member.roles.cache.has(config.server.roles.selectedadmin)) return;
