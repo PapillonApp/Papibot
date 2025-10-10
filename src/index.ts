@@ -12,7 +12,7 @@ async function start() {
         await bot.login(process.env.BOT_TOKEN);
         await loadCommands(bot);
         await loadEvents(bot);
-        console.log(`Connected to Discord with the user ${bot.user?.username}`);
+        console.log(`Connected to Discord with the user ${bot.user?.tag}`);
     } catch (error) {
         console.error("An error occurred while starting the bot:", error);
         process.exit(1);
