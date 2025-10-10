@@ -5,7 +5,7 @@ export function errorMessage(
 ): InteractionReplyOptions {
     const title = new TextDisplayBuilder().setContent("# Oups, une erreur est survenue");
     const description = new TextDisplayBuilder().setContent(error);
-    const thumbnail = new ThumbnailBuilder({ media: { url: "https://raw.githubusercontent.com/ryzenixx/papillon-assets/refs/heads/main/papillon_angry.png" } });
+    const thumbnail = new ThumbnailBuilder({ media: { url: "https://raw.githubusercontent.com/PapillonApp/Papibot/refs/heads/main/src/assets/papillon_angry.png" } });
     const section = new SectionBuilder().addTextDisplayComponents(title, description).setThumbnailAccessory(thumbnail);
     const container = new ContainerBuilder().addSectionComponents(section);
     
