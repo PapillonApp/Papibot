@@ -15,7 +15,7 @@ export default async (bot: ExtendedClient) => {
             }
             else
             {
-                console.log("Connected to MySQL");
+                console.log("Database ping successful");
             }
         });
     }
