@@ -9,5 +9,7 @@
             "services": {}
         }
     },
-    "emojis": {}
+    "emojis": {
+        "papillon": "<:papillon:1407089140020936755>"
+    }
 }
