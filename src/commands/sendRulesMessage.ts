@@ -14,7 +14,7 @@ const sendRulesMessageCommand: Command = {
         const description = new TextDisplayBuilder().setContent("Papillon est un client libre, open-source et développé par une communauté d’élèves pour l’ensemble de vos services de vie scolaire ! 😎")
         const thumbnail = new ThumbnailBuilder({
             media: {
-                url: ``,
+                url: `https://raw.githubusercontent.com/PapillonApp/Papibot/refs/heads/main/src/assets/icon_green.png`,
             },
         });
         const separator = new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Large);
