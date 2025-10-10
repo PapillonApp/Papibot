@@ -19,7 +19,7 @@ export default async function loadSlashCommands(bot: BotClient) {
                     InteractionContextType.PrivateChannel,
                 ] : [InteractionContextType.Guild]
             )
-            .setDefaultMemberPermissions(command.permission === "null" ? null : command.permission);
+            .setDefaultMemberPermissions(command.permission === undefined ? null : command.permission);
 
         if(command.options?.length) {
             for (const opt of command.options) {
