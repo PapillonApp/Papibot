@@ -14,7 +14,7 @@ export interface Command {
   name: string;
   description?: string;
   dm?: boolean;
-  permission?: string;
+  permission?: bigint;
   options?: CommandOption[];
 
   run?: (bot: ExtendedClient, interaction: ChatInputCommandInteraction) => Promise<void>;
