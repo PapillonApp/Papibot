@@ -29,7 +29,7 @@ export default async function interactionCreate(bot: ExtendedClient, interaction
                 const description = new TextDisplayBuilder().setContent(`Tu as désormais accès à l'entièreté du serveur Discord de Papillon, bon séjour parmis nous ! 💚`);
                 const thumbnail = new ThumbnailBuilder({
                     media: {
-                        url: ``,
+                        url: `https://raw.githubusercontent.com/PapillonApp/Papibot/refs/heads/main/src/assets/papillon_purple.png`,
                     },
                 });
                 const section = new SectionBuilder().addTextDisplayComponents(title, description).setThumbnailAccessory(thumbnail);
