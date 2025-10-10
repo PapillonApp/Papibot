@@ -21,7 +21,7 @@ export default async (bot: ExtendedClient, message: Message) => {
     if (!bot.user || !message.mentions.users.has(bot.user.id)) return;
     const content = message.content.replace(new RegExp(`<@${bot.user.id}>`, 'g'), '').trim();
     const originalAuthor = repliedMessage.author.username;
-    const prompt = `Réponds de manière blasée et très moqueuse envers ${originalAuthor}, en te basant sur le message suivant: "${repliedMessage.content}". La réponse doit être courte, maximum 3 lignes.`;
+    const prompt = `Réponds de manière moqueuse, drôle et goofy envers ${originalAuthor}, en te basant sur le message suivant: "${repliedMessage.content}". Ajoute des emojis pour rendre ça fun et exagéré. La réponse doit être courte, maximum 3 lignes.`;
 
     try {
         const completion = await openai.chat.completions.create({
