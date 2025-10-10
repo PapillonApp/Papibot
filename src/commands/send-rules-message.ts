@@ -41,7 +41,6 @@ const sendRulesMessageCommand: Command = {
             .addSeparatorComponents(separator2)
             .addSectionComponents(section2);
 
-        await interaction.deferReply();
         await (interaction.channel as GuildTextBasedChannel).send({
             flags: [MessageFlags.IsComponentsV2],
             components: [container]
