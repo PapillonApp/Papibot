@@ -16,7 +16,7 @@ export default async (bot: ExtendedClient) => {
         });
     }
     pingDatabase();
-    setInterval(pingDatabase, 2 * 60 * 60 * 1000);
+    setInterval(pingDatabase, 1 * 60 * 60 * 1000);
 
     await loadSlashCommands(bot);
 
