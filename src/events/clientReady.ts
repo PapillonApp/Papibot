@@ -13,10 +13,6 @@ export default async (bot: ExtendedClient) => {
             if(err) {
                 console.error("Error connecting to MySQL:", err);
             }
-            else
-            {
-                console.log("Database ping successful");
-            }
         });
     }
     pingDatabase();

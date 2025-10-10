@@ -14,10 +14,6 @@ export default function ensureDatabase(): Pool {
             queueLimit: 0
         });
 
-        pool.on("connection", () => {
-            console.log("MySQL connection established");
-        });
-
         pool.on("error", (err) => {
             console.error("MySQL error:", err);
         });
