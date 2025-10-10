@@ -11,7 +11,7 @@ export default async (bot: ExtendedClient) => {
     function pingDatabase() {
         database.query("SELECT 1", (err) => {
             if(err) {
-                console.error("Error connecting to MySQL:", err);
+                console.error("Error connecting to MySQL: ", err);
             }
         });
     }

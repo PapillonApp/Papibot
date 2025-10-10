@@ -15,12 +15,12 @@ export default function ensureDatabase(): Pool {
         });
 
         pool.on("error", (err) => {
-            console.error("MySQL error:", err);
+            console.error("MySQL error: ", err);
         });
 
         pool.query("SELECT 1", (err: mysql.QueryError | null) => {
             if(err) {
-                console.error("Error connecting to MySQL:", err);
+                console.error("Error connecting to MySQL: ", err);
             }
             else
             {
