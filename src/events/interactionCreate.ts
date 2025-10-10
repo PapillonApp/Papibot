@@ -17,7 +17,7 @@ export default async function interactionCreate(bot: ExtendedClient, interaction
             }
         } catch (err) {
             await interaction.reply(errorMessage("Une erreur est survenue lors de l’exécution de la commande."));
-            return;
+            return console.error(err);
         }
     }
 }
