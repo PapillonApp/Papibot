@@ -4,7 +4,7 @@ import type { ExtendedClient } from "../types/extendedClient";
 import config from '../../config.json';
 
 const sendRulesMessageCommand: Command = {
-    name: "sendRulesMessage",
+    name: "send-rules-message",
     description: "Envoi du message contenant les règles",
     dm: false,
     permission: PermissionFlagsBits.ManageGuild,
