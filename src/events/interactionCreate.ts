@@ -112,4 +112,8 @@ export default async function interactionCreate(bot: ExtendedClient, interaction
             }
         }
     }
+
+    if(interaction.isModalSubmit()) {
+        
+    }
 }
