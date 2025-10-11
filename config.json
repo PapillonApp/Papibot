@@ -10,6 +10,9 @@
         }
     },
     "emojis": {
-        "papillon": "<:papillon:1407089140020936755>"
+        "papillon": "<:papillon:1407089140020936755>",
+        "animated": {
+            "question": "<a:question:1426567918061097043>"
+        }
     }
 }
