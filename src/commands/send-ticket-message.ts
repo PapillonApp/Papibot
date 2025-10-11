@@ -20,7 +20,7 @@ const sendTicketMessageCommand: Command = {
         });
         const selectMenu = new StringSelectMenuBuilder({
             custom_id: "selectTicketType",
-            placeholder: `Choisis la catégorie de ta demande ${config.emojis.papillon}`,
+            placeholder: "Choisis la catégorie de ta demande 🦋",
             max_values: 1,
             options: [
                 { emoji: `${config.emojis.papillon}`, label: "Problème sur Papillon", value: "problemTicketType", description: "Un problème sur l'application ?" },
