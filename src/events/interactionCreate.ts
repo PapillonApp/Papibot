@@ -65,7 +65,7 @@ export default async function interactionCreate(bot: ExtendedClient, interaction
                         .setPlaceholder("8.2.0")
                         .setRequired(true);
                     const inputDescriptionProblem = new TextInputBuilder()
-                        .setCustomId("inputVersionProblem")
+                        .setCustomId("inputDescriptionProblem")
                         .setLabel("Décris brièvement ton problème ci-dessous ⬇️")
                         .setStyle(TextInputStyle.Paragraph)
                         .setPlaceholder("Je n'arrives pas à me connecter à mon compte PRONOTE car...")
