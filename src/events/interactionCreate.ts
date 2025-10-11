@@ -51,7 +51,7 @@ export default async function interactionCreate(bot: ExtendedClient, interaction
                 case "problemTicketType":
                     const modalTicketProblem = new ModalBuilder()
                         .setCustomId("modalTicketProblem")
-                        .setTitle(`${config.emojis.papillon} Problème sur Papillon`);
+                        .setTitle(`🦋 Problème sur Papillon`);
                     const inputModelProblem = new TextInputBuilder()
                         .setCustomId("inputModelProblem")
                         .setLabel("Quel est ton appareil ? 📱")
