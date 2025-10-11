@@ -12,7 +12,7 @@ const sendTicketMessageCommand: Command = {
     async run(bot: ExtendedClient, interaction: ChatInputCommandInteraction) {
         const title = new TextDisplayBuilder().setContent(`# Bienvenue sur le support Papillon ${config.emojis.papillon}`);
         const separator = new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Large);
-        const description = new TextDisplayBuilder().setContent(`Des problèmes pour vous connecter à Papillon ? Des questions sur l'application ?\n\n**Ici, nous répondons à toutes vos interrogations ! ${config.emojis.animated.question}**`);
+        const description = new TextDisplayBuilder().setContent(`Des problèmes pour vous connecter à Papillon ? Des questions sur l'application ?\n\n**Ici, nous répondons à toutes vos interrogations ${config.emojis.animated.question}**`);
         const thumbnail = new ThumbnailBuilder({
             media: {
                 url: "https://raw.githubusercontent.com/PapillonApp/Papibot/refs/heads/main/src/assets/icon_green.png"
