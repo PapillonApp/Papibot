@@ -3,6 +3,7 @@ import loadSlashCommands from "../loaders/loadSlashCommands";
 import loadDatabase from "../loaders/loadDatabase";
 import express from "express";
 import type { ExtendedClient } from "../types/extendedClient";
+import config from '../../config.json';
 
 export default async (bot: ExtendedClient) => {
     const database = loadDatabase()
@@ -25,7 +26,7 @@ export default async (bot: ExtendedClient) => {
             status: "idle",
             activities: [
                 {
-                    name: "1,2M de téléchargements",
+                    name: `${config.bot.status}`,
                     type: ActivityType.Watching
                 }
             ]
