@@ -176,7 +176,7 @@ export default async function interactionCreate(bot: ExtendedClient, interaction
             const title2 = new TextDisplayBuilder().setContent(`🎉 **Votre ticket a bien été créé dans le canal <#${ticketChannel.id}> !**\nVous pouvez y accéder directement via le bouton ci-dessous.`);
             const buttonLinkToTicket = new ButtonBuilder()
                 .setStyle(ButtonStyle.Link)
-                .setURL(`discord://-/channels/${config.server.id}/${ticketChannel.id}`)
+                .setURL(`https://discord.com/channels/${config.server.id}/${ticketChannel.id}`)
                 .setLabel("Voir mon ticket")
                 .setEmoji(`⛓️‍💥`);
             const actionRow2 = new ActionRowBuilder<ButtonBuilder>().addComponents(buttonLinkToTicket);
