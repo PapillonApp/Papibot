@@ -2,15 +2,24 @@
     "server": {
         "id": "1014931881906675712",
         "channels": {},
-        "categories": {},
+        "categories": {
+            "ticketsProblem": "1411468209126903920"
+        },
         "roles": {
             "unverified": "1241436899789377617",
             "selectedadmin": "1301959807565172766",
-            "services": {}
+            "support": "1317594228351565904",
+            "services": {
+                "pronote": "1094548339502092289",
+                "ecoledirecte": "1094548467013136404",
+                "skolengo": "1094548571967193098"
+            }
         }
     },
     "emojis": {
         "papillon": "<:papillon:1407089140020936755>",
+        "phone": "<:phone:1427034780364443761>",
+        "tools": "<:tools:1427035750209290381>",
         "animated": {
             "question": "<a:question:1426567918061097043>"
         }
