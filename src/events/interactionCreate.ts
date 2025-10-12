@@ -149,7 +149,7 @@ export default async function interactionCreate(bot: ExtendedClient, interaction
             }) as GuildTextBasedChannel;
 
             const title = new TextDisplayBuilder().setContent(`## Bienvenue sur votre ticket, <@${member.user.id}> ${config.emojis.papillon}`);
-            const description = new TextDisplayBuilder().setContent("-# Votre ticket est entre de bonnes mains ; notre **équipe support** va le prendre en charge dans les plus brefs délais.");
+            const description = new TextDisplayBuilder().setContent("-# Votre ticket est entre de bonnes mains ; notre **équipe support** va le prendre en charge dans les plus brefs délais 😎");
             const separator = new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Large);
             const description2 = new TextDisplayBuilder().setContent(`### Informations renseignées par l'utilisateur lors de l'ouverture de son ticket :\n${config.emojis.phone} **Modèle de l'appareil :** ${inputModelProblem}\n${config.emojis.papillon} **Version de Papillon :** ${inputVersionProblem}\n${config.emojis.tools} **Service(s) scolaire(s) :** ${detectedRoles}\n💬 **Description du problème :** ${inputDescriptionProblem}`);
             const separator2 = new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Large);
@@ -171,6 +171,21 @@ export default async function interactionCreate(bot: ExtendedClient, interaction
                     parse: ["users"],
                     roles: []
                 }
+            });
+
+            const title2 = new TextDisplayBuilder().setContent(`🎉 **Votre ticket a bien été créé dans le canal <#${ticketChannel.id}> !**\nVous pouvez y accéder directement via le bouton ci-dessous.`);
+            const buttonLinkToTicket = new ButtonBuilder()
+                .setStyle(ButtonStyle.Link)
+                .setURL(`discord://-/channels/${config.server.id}/${ticketChannel.id}`)
+                .setLabel("Voir mon ticket")
+                .setEmoji(`⛓️‍💥`);
+            const actionRow2 = new ActionRowBuilder<ButtonBuilder>().addComponents(buttonLinkToTicket);
+            const container2 = new ContainerBuilder()
+                .addTextDisplayComponents(title2)
+                .addActionRowComponents(actionRow2);
+            interaction.reply({
+                flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
+                components: [container2]
             });
         }
     }
