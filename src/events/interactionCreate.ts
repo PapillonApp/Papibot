@@ -125,7 +125,7 @@ export default async function interactionCreate(bot: ExtendedClient, interaction
                 [`<@&${config.server.roles.services.skolengo}>`]: config.server.roles.services.skolengo, // Skolengo
                 [`<@&${config.server.roles.services.ecoledirecte}>`]: config.server.roles.services.ecoledirecte, // École Directe
             };
-            const userRoles = Object.entries(servicesRoles).filter(([roleId]) => member?.roles.cache.has(roleId ?? "")).map(([name]) => name);
+            const userRoles = Object.entries(servicesRoles).filter(([name, roleId]) => member?.roles.cache.has(roleId ?? "")).map(([name]) => name);
             const detectedRoles = userRoles.length > 0 ? userRoles.join(", ") : "Aucun service scolaire détecté";
             
             const ticketChannel = await guild?.channels.create({
