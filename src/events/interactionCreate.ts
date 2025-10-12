@@ -1,6 +1,6 @@
 import { ExtendedClient } from "../types/extendedClient";
 import { errorMessage } from "../functions/errorMessage";
-import { ActionRowBuilder, ContainerBuilder, GuildMember, Interaction, LabelBuilder, MessageFlags, ModalBuilder, SectionBuilder, TextDisplayBuilder, TextInputBuilder, TextInputStyle, ThumbnailBuilder } from "discord.js";
+import { ActionRow, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, ContainerBuilder, GuildMember, GuildTextBasedChannel, Interaction, LabelBuilder, MessageFlags, ModalBuilder, PermissionsBitField, SectionBuilder, SeparatorBuilder, SeparatorSpacingSize, TextDisplayBuilder, TextInputBuilder, TextInputStyle, ThumbnailBuilder } from "discord.js";
 import { Command } from "../types/command";
 import config from '../../config.json';
 
@@ -114,6 +114,64 @@ export default async function interactionCreate(bot: ExtendedClient, interaction
     }
 
     if(interaction.isModalSubmit()) {
-        
+        if(interaction.customId === "modalTicketProblem") {
+            const member = interaction.member as GuildMember;
+            const guild = interaction.guild;
+            const inputModelProblem = interaction.fields.getTextInputValue("inputModelProblem") || "Non renseigné";
+            const inputVersionProblem = interaction.fields.getTextInputValue("inputVersionProblem") || "Non renseigné";
+            const inputDescriptionProblem = interaction.fields.getTextInputValue("inputDescriptionProblem") || "Non renseigné";
+            const servicesRoles = {
+                [`<@&${config.server.roles.services.pronote}>`]: config.server.roles.services.pronote, // PRONOTE
+                [`<@&${config.server.roles.services.skolengo}>`]: config.server.roles.services.skolengo, // Skolengo
+                [`<@&${config.server.roles.services.ecoledirecte}>`]: config.server.roles.services.ecoledirecte, // École Directe
+            };
+            const userRoles = Object.entries(servicesRoles).filter(([roleId]) => member?.roles.cache.has(roleId ?? "")).map(([name]) => name);
+            const detectedRoles = userRoles.length > 0 ? userRoles.join(", ") : "Aucun service scolaire détecté";
+            
+            const ticketChannel = await guild?.channels.create({
+                name: `⌛${member.user.username}`,
+                type: ChannelType.GuildText,
+                parent: config.server.categories.ticketsProblem,
+                permissionOverwrites: [
+                    {
+                        id: guild.id,
+                        deny: [PermissionsBitField.Flags.ViewChannel],
+                    },
+                    {
+                        id: member.id,
+                        allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
+                    },
+                    {
+                        id: config.server.roles.support,
+                        allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
+                    },
+                ]
+            }) as GuildTextBasedChannel;
+
+            const title = new TextDisplayBuilder().setContent(`## Bienvenue sur votre ticket, <@${member.user.id}> ${config.emojis.papillon}`);
+            const description = new TextDisplayBuilder().setContent("-# Votre ticket est entre de bonnes mains ; notre **équipe support** va le prendre en charge dans les plus brefs délais.");
+            const separator = new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Large);
+            const description2 = new TextDisplayBuilder().setContent(`### Informations renseignées par l'utilisateur lors de l'ouverture de son ticket :\n${config.emojis.phone} **Modèle de l'appareil :** ${inputModelProblem}\n${config.emojis.papillon} **Version de Papillon :** ${inputVersionProblem}\n${config.emojis.tools} **Service(s) scolaire(s) :** ${detectedRoles}\n💬 **Description du problème :** ${inputDescriptionProblem}`);
+            const separator2 = new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Large);
+            const buttonCloseTicket = new ButtonBuilder()
+                .setCustomId("closeTicket")
+                .setLabel("🔐")
+                .setStyle(ButtonStyle.Danger);
+            const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(buttonCloseTicket);
+            const container = new ContainerBuilder()
+                .addTextDisplayComponents(title, description)
+                .addSeparatorComponents(separator)
+                .addTextDisplayComponents(description2)
+                .addSeparatorComponents(separator2)
+                .addActionRowComponents(actionRow);
+            ticketChannel.send({
+                flags: [MessageFlags.IsComponentsV2],
+                components: [container],
+                allowedMentions: {
+                    parse: ["users"],
+                    roles: []
+                }
+            });
+        }
     }
 }
